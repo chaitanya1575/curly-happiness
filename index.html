@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Sister!</title>
+    <!-- Google Fonts for Poppins and Dancing Script -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Blackish Violet Theme with "Wow" Factor */
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Richer dark violet background with a radial gradient and vignette for depth */
+            background: radial-gradient(circle at center, #1a062b 10%, #0d0315 100%);
+            box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.9); /* Stronger Vignette */
+            overflow: hidden; 
+            position: relative;
+            color: #fff;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- Hanging Lamps (Fairy Lights) (Retained styles) --- */
+        .fairy-lights { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 5; }
+        .light { --light-color: #ffd700; --glow-color: #ff00ff; position: absolute; width: 10px; height: 10px; border-radius: 50%; background-color: var(--light-color); box-shadow: 0 0 5px var(--light-color), 0 0 10px var(--glow-color); opacity: 0.7; animation: twinkle 5s infinite ease-in-out alternate; z-index: 10; }
+        .light::before { content: ''; position: absolute; bottom: 100%; left: 50%; width: 1px; height: var(--string-length, 50px); background-color: rgba(255, 255, 255, 0.2); transform: translateX(-50%); }
+        @keyframes twinkle { 0%, 100% { opacity: 0.6; transform: scale(1); box-shadow: 0 0 5px var(--light-color), 0 0 10px var(--glow-color); } 50% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 20px var(--light-color), 0 0 40px var(--glow-color); } }
+        /* Light Positions (Shortened for brevity) */
+        .light:nth-child(1) { top: 10%; left: 15%; --string-length: 40px; animation-delay: 0.5s; } .light:nth-child(2) { top: 5%; left: 45%; --light-color: #ff66ff; --glow-color: #ffd700; --string-length: 60px; animation-delay: 1.5s; } .light:nth-child(3) { top: 12%; left: 80%; --string-length: 55px; animation-delay: 2.5s; } .light:nth-child(4) { top: 20%; left: 5%; --light-color: #cc00ff; --glow-color: #ffcc00; --string-length: 70px; animation-delay: 3.5s; } .light:nth-child(5) { top: 8%; left: 65%; --string-length: 45px; animation-delay: 1.0s; } .light:nth-child(6) { top: 18%; left: 30%; --light-color: #ffd700; --glow-color: #ff66ff; --string-length: 65px; animation-delay: 2.0s; } .light:nth-child(7) { top: 15%; left: 95%; --string-length: 50px; animation-delay: 4.0s; } .light:nth-child(8) { top: 25%; left: 55%; --light-color: #ff66ff; --glow-color: #ffd700; --string-length: 75px; animation-delay: 0.0s; } .light:nth-child(9) { top: 3%; left: 25%; --string-length: 40px; animation-delay: 3.0s; } .light:nth-child(10) { top: 10%; left: 75%; --light-color: #cc00ff; --glow-color: #ffcc00; --string-length: 50px; animation-delay: 1.2s; }
+
+        /* --- Gift Box Styles (Retained) --- */
+        .gift-box { width: 250px; height: 180px; position: relative; cursor: pointer; perspective: 1500px; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55); transform: rotateY(-10deg) rotateX(10deg); }
+        .box-bottom { width: 100%; height: 100%; background-color: #5c007a; background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 4px 4px; position: absolute; bottom: 0; border-radius: 8px; transform: translateZ(-20px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(255, 255, 255, 0.1); }
+        .box-lid { width: 110%; height: 60px; background-color: #9900cc; position: absolute; top: -30px; left: -5%; border-radius: 8px; transform-origin: bottom center; transition: transform 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); z-index: 10; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); transform: translateZ(20px); }
+        .gift-box.open .box-lid { transform: rotateX(-140deg) translateY(-150px) translateZ(100px); }
+        .ribbon-v, .ribbon-h { background-color: #ffd700; position: absolute; z-index: 11; box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.9), 0 0 15px #ffd700; }
+        .ribbon-v { width: 25px; height: 100%; left: calc(50% - 12.5px); }
+        .ribbon-h { width: 100%; height: 25px; top: calc(50% - 12.5px); }
+        .bow { background-color: #ffcc00; position: absolute; top: -20px; z-index: 12; box-shadow: 0 0 10px #ffcc00, 0 0 20px rgba(255, 204, 0, 0.5); border-radius: 50%; transition: transform 0.3s ease, opacity 0.3s ease; }
+        .bow-left, .bow-right { width: 40px; height: 40px; transform: rotate(45deg); }
+        .bow-left { left: calc(50% - 40px); }
+        .bow-right { left: calc(50% + 0px); }
+        .bow-center { width: 25px; height: 25px; border-radius: 50%; left: calc(50% - 12.5px); top: -15px; background-color: #ffd700; box-shadow: 0 0 15px #ffd700; }
+        .gift-box.open .bow { transform: translateY(-50px) scale(0.5) rotate(var(--bow-rot, 0deg)); opacity: 0; }
+        .gift-item { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%) translateY(0); width: 120px; height: 120px; background: radial-gradient(circle, #fff 0%, #ff66ff 40%, #cc00cc 100%); border-radius: 15px; opacity: 0; transition: transform 2s cubic-bezier(0.17, 0.84, 0.44, 1.5), opacity 1s ease; z-index: 9; box-shadow: 0 0 30px #ff00ff, 0 0 60px rgba(255, 102, 255, 0.7); top: 100%; display: flex; justify-content: center; align-items: center; font-size: 1em; color: #1a062b; font-weight: 700; text-align: center; padding: 10px; border: 3px solid #ffd700; }
+        .gift-item.show { opacity: 1; transform: translateX(-50%) translateY(-220px) scale(1.15); }
+        .message { font-family: 'Dancing Script', cursive; color: #fff; font-size: 3.5em; text-align: center; margin-top: 100px; opacity: 0; transform: scale(0.8) translateY(50px); transition: opacity 1.5s ease-out, transform 1.5s ease-out; z-index: 20; text-shadow: 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 30px #ffcc00; letter-spacing: 3px; max-width: 90vw; }
+        .message.show { opacity: 1; transform: scale(1) translateY(0); }
+        
+        /* --- Cake Image Container Styles --- */
+        .cake-container {
+            position: absolute;
+            top: 200px; /* Position below the gift box */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9; 
+            width: 300px; 
+            height: 250px; 
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .cake-image {
+            width: 200px;
+            height: 150px;
+            object-fit: contain; 
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.5));
+        }
+
+        /* --- Candle & Name Overlays --- */
+        .candle-wrapper {
+            position: absolute;
+            top: 15px; /* Adjust to place the candle on the top of your specific cake image */
+            z-index: 15;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cake-name {
+            font-family: 'Dancing Script', cursive;
+            color: #ff66ff; 
+            font-size: 1.8em;
+            font-weight: 700;
+            position: absolute;
+            top: 100px; /* Adjust to place the name on the side of your specific cake image */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 12;
+            text-shadow: 0 0 5px rgba(255, 102, 255, 0.8);
+            pointer-events: none;
+        }
+
+        /* Candle Styling (Used for all candles) */
+        .candle-wax {
+            width: 20px;
+            height: 60px;
+            background-color: #f7d794; 
+            border-radius: 3px;
+            position: relative;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .candle-wick {
+            width: 1px;
+            height: 6px;
+            background-color: #333;
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .flame {
+            width: 8px;
+            height: 16px;
+            background: radial-gradient(circle at 50% 0, #ffcc00, #ff6600, transparent);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0; /* Initially unlit */
+            transition: opacity 0.5s ease-in;
+            box-shadow: 0 0 10px 5px rgba(255, 153, 0, 0.7), 0 0 20px 10px rgba(255, 204, 0, 0.5);
+        }
+
+        /* Lit State - Applied to the candle's parent container */
+        .lit .flame {
+            opacity: 1;
+            animation: flicker 0.15s infinite alternate; /* Flame flicker animation */
+        }
+        
+        /* Realistic Flicker Animation */
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scaleY(1) translateY(0); box-shadow: 0 0 10px 5px rgba(255, 153, 0, 0.7); }
+            50% { transform: translateX(-50%) scaleY(0.95) translateY(1px); box-shadow: 0 0 12px 6px rgba(255, 153, 0, 0.8); }
+            100% { transform: translateX(calc(-50% + 1px)) scaleY(1.05) translateY(-1px); box-shadow: 0 0 8px 4px rgba(255, 153, 0, 0.6); }
+        }
+
+        /* --- Extra Candles Down the Page --- */
+        .extra-candles {
+            position: fixed; /* Keep them at the bottom of the viewport */
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 20px 10px;
+            z-index: 8; /* Below the main cake/gift, but visible */
+            pointer-events: none; /* Allows user to click through to elements above */
+        }
+        .extra-candle .candle-wrapper {
+            position: static; /* Override absolute position from main candle */
+            transform: none;
+        }
+        .extra-candle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0.8;
+            margin: 0 5px;
+            padding-bottom: 5px;
+            pointer-events: all; /* Make candle itself clickable */
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        /* --- New Click Me Message Style --- */
+        .click-me-message {
+            position: absolute;
+            top: 50%; /* Center vertically on the gift box */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 15; /* Above the gift box lid/bow */
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            color: #ffd700; /* Gold/Light color */
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 5px 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #ff66ff;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            pointer-events: none; /* Crucial: allows click to pass to the gift box below */
+        }
+        .click-me-message.hide {
+            opacity: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="fairy-lights">
+        <!-- Hanging lamps/lights for the ambiance (10 total) -->
+        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div><div class="light"></div><div class="light"></div>
+        <div class="light"></div><div class="light"></div>
+    </div>
+    
+    <div class="container">
+
+        <!-- The Real Cake Image Container (Below Gift Box) -->
+        <div class="cake-container" id="birthdayCake">
+            <!-- CRITICAL: Image path kept as provided, but often fails in a browser without a relative path. -->
+            <img src="cake.png" alt="cake" class="cake-image">
+            
+            <!-- Candle and Name positioned absolutely over the image -->
+            <div class="cake-name">Tejaswini</div>
+            
+            <div class="candle-wrapper main-candle">
+                <div class="candle-wax">
+                    <div class="candle-wick"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gift-box" id="giftBox">
+            <div class="box-bottom"></div>
+            <div class="box-lid">
+                <div class="ribbon-v"></div>
+                <div class="ribbon-h"></div>
+                <div class="bow bow-left"></div>
+                <div class="bow bow-right"></div>
+                <div class="bow bow-center"></div>
+            </div>
+            <div class="gift-item" id="giftItem">
+                💖 Your Gift Awaits! 🎁
+            </div>
+        </div>
+        
+        <!-- NEW: Click Me Message over the Gift Box -->
+        <div class="click-me-message" id="clickMeMessage">
+            Click me for lightning up the candle!
+        </div>
+
+        <br/>
+        <br/>
+        <div class="message" id="message"></div>
+    </div>
+
+    <!-- Extra Candles at the bottom of the page -->
+    <div class="extra-candles" id="extraCandles">
+        <div class="extra-candle" data-candle-id="1">
+             <div class="candle-wrapper">
+                <div class="candle-wax" style="height: 40px; background-color: #ff66ff;">
+                    <div class="candle-wick"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        <div class="extra-candle" data-candle-id="2">
+             <div class="candle-wrapper">
+                <div class="candle-wax" style="height: 70px; background-color: #ffd700;">
+                    <div class="candle-wick"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        <div class="extra-candle" data-candle-id="3">
+             <div class="candle-wrapper">
+                <div class="candle-wax" style="height: 50px; background-color: #ffc0cb;">
+                    <div class="candle-wick"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        <div class="extra-candle" data-candle-id="4">
+             <div class="candle-wrapper">
+                <div class="candle-wax" style="height: 65px; background-color: #cc00ff;">
+                    <div class="candle-wick"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        <div class="extra-candle" data-candle-id="5">
+             <div class="candle-wrapper">
+                <div class="candle-wax" style="height: 45px; background-color: #ff66ff;">
+                    <div class="candle-wick"></div>
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="birthdayMusic" src="birthday_song.mp3" preload="auto"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const giftBox = document.getElementById('giftBox');
+            const giftItem = document.getElementById('giftItem');
+            const messageDisplay = document.getElementById('message');
+            const birthdayMusic = document.getElementById('birthdayMusic');
+            const mainCakeContainer = document.getElementById('birthdayCake');
+            const extraCandles = document.querySelectorAll('.extra-candle');
+            const clickMeMessage = document.getElementById('clickMeMessage'); // Get the new message element
+            let hasBeenClicked = false;
+            const MUSIC_DURATION = 30000; // 30 seconds
+            const GIFT_POP_DELAY = 500; 
+            const REDIRECT_DELAY = 20000; // 20 seconds total before redirect
+
+            // Function to light all candles (main and extra)
+            function lightAllCandles() {
+                mainCakeContainer.classList.add('lit');
+                extraCandles.forEach(candle => {
+                    candle.classList.add('lit');
+                });
+            }
+
+            // Add click listener to each extra candle to light it individually (and unlight it)
+            extraCandles.forEach(candle => {
+                candle.addEventListener('click', (e) => {
+                    // Prevent individual lighting if the main gift box has been clicked (to keep the main flow clean)
+                    if (hasBeenClicked) return; 
+
+                    // Toggle the 'lit' class on the clicked candle
+                    candle.classList.toggle('lit');
+                });
+            });
+
+            giftBox.addEventListener('click', () => {
+                if (!hasBeenClicked) {
+                    hasBeenClicked = true;
+                    giftBox.classList.add('open');
+                    
+                    // --- NEW: Hide the "Click Me" message immediately ---
+                    clickMeMessage.classList.add('hide');
+
+                    // --- Light ALL Candles on Main Click ---
+                    lightAllCandles();
+
+                    // 1. Play music for up to 30 seconds
+                    if (birthdayMusic) {
+                        birthdayMusic.play().catch(e => console.log("Audio play prevented:", e));
+                    }
+
+                    // 2. Burst confetti and flowers
+                    createConfettiAndFlowers(giftBox);
+
+                    // 3. Show message
+                    messageDisplay.innerHTML = "🕯️ Lighten up the candle with your birthday! 🎁";
+                    messageDisplay.classList.add('show');
+                    
+                    // 4. Gift appears coming outside of the box (0.5s after click)
+                    setTimeout(() => {
+                        giftItem.classList.add('show');
+                    }, GIFT_POP_DELAY); 
+
+                    // 5. Set up the redirect (20 seconds total from click)
+                    setTimeout(() => {
+                        // Stop music and redirect
+                        if (birthdayMusic) {
+                            birthdayMusic.pause();
+                            birthdayMusic.currentTime = 0;
+                        }
+                        window.location.href = 'gift.html';
+                    }, REDIRECT_DELAY);
+                    
+                    // 6. Ensure music stops after 30s
+                    setTimeout(() => {
+                         if (birthdayMusic) {
+                            birthdayMusic.pause();
+                        }
+                    }, MUSIC_DURATION);
+                }
+            });
+
+            // --- Confetti/Flower Function (included for completeness) ---
+            function createConfettiAndFlowers(originElement) {
+                const confettiColors = ['#ffcc00', '#ff66ff', '#99ff33', '#66ccff', '#ff3333', '#ffc0cb'];
+                const flowerColors = ['#ff99cc', '#ff66ff', '#cc0066', '#ffd700', '#e0b0ff'];
+                const numParticles = 100;
+                const rect = originElement.getBoundingClientRect();
+
+                for (let i = 0; i < numParticles; i++) {
+                    const particle = document.createElement('div');
+                    const isConfetti = Math.random() > 0.4;
+
+                    if (isConfetti) {
+                        particle.classList.add('confetti');
+                        particle.style.setProperty('--color', confettiColors[Math.floor(Math.random() * confettiColors.length)]);
+                        const size = Math.random() * 8 + 5; 
+                        particle.style.setProperty('--size', `${size}px`);
+                        particle.style.setProperty('--border-radius', Math.random() > 0.5 ? '50%' : '0'); 
+                    } else {
+                        particle.classList.add('flower-particle');
+                        particle.style.setProperty('--color', flowerColors[Math.floor(Math.random() * flowerColors.length)]);
+                        const size = Math.random() * 10 + 10; 
+                        particle.style.setProperty('--size', `${size}px`);
+                    }
+
+                    const startX = rect.left + rect.width / 2 + (Math.random() - 0.5) * rect.width * 0.2;
+                    const startY = rect.top + rect.height / 2 + (Math.random() - 0.5) * rect.height * 0.2;
+                    particle.style.left = `${startX}px`;
+                    particle.style.top = `${startY}px`;
+
+                    const burstStrength = Math.random() * 200 + 100;
+                    const spreadX = (Math.random() - 0.5) * window.innerWidth * 0.6;
+                    const spreadY = (Math.random() * -1) * burstStrength - (Math.random() * 100);
+
+                    const endX = startX + spreadX;
+                    const endY = startY + spreadY + window.innerHeight * 0.8;
+
+                    const peakX = startX + spreadX * 0.5;
+                    const peakY = startY + (Math.random() * -1) * (burstStrength * 1.5);
+
+                    particle.style.setProperty('--start-x', `0px`);
+                    particle.style.setProperty('--start-y', `0px`);
+                    particle.style.setProperty('--peak-x', `${peakX - startX}px`);
+                    particle.style.setProperty('--peak-y', `${peakY - startY}px`);
+                    particle.style.setProperty('--end-x', `${endX - startX}px`);
+                    particle.style.setProperty('--end-y', `${endY - startY}px`);
+
+                    particle.style.setProperty('--rot-start', `${Math.random() * 360}deg`);
+                    particle.style.setProperty('--rot-end', `${Math.random() * 720 + 360}deg`);
+                    
+                    document.body.appendChild(particle);
+
+                    particle.addEventListener('animationend', () => {
+                        particle.remove();
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

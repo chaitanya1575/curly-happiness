@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Birthday Gift 🎂</title>
+<style>
+  /* Base Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    background: radial-gradient(circle at top, #ffe6f2, #fff0f5);
+    overflow-x: hidden;
+    text-align: center;
+    color: #d63384;
+    padding-bottom: 50px;
+  }
+
+  h1 {
+    margin-top: 30px;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    color: #ff1493;
+    text-shadow: 2px 2px 10px rgba(255, 105, 180, 0.4);
+    animation: fadeInDown 1.5s ease;
+  }
+
+  p {
+    color: #444;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin-top: 10px;
+    animation: fadeIn 2s ease;
+  }
+
+  /* Animations */
+  @keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-50px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  /* Photo Gallery Styles */
+  .photo-gallery {
+    margin: 40px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    max-width: 1200px;
+    padding: 0 10px;
+  }
+
+  .photo-gallery img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: scale(0.8);
+    animation: zoomIn 1s ease forwards;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .photo-gallery img:hover {
+    transform: scale(0.95);
+  }
+
+  /* Animation delays for up to 10 images */
+  .photo-gallery img:nth-child(1) { animation-delay: 0.5s; }
+  .photo-gallery img:nth-child(2) { animation-delay: 0.7s; }
+  .photo-gallery img:nth-child(3) { animation-delay: 0.9s; }
+  .photo-gallery img:nth-child(4) { animation-delay: 1.1s; }
+  .photo-gallery img:nth-child(5) { animation-delay: 1.3s; }
+  .photo-gallery img:nth-child(6) { animation-delay: 1.5s; }
+  .photo-gallery img:nth-child(7) { animation-delay: 1.7s; }
+  .photo-gallery img:nth-child(8) { animation-delay: 1.9s; }
+  .photo-gallery img:nth-child(9) { animation-delay: 2.1s; }
+  .photo-gallery img:nth-child(10) { animation-delay: 2.3s; }
+
+  @keyframes zoomIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .wish {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    color: #c2185b;
+    margin-top: 40px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1.5s ease forwards 2.5s;
+    margin-bottom: 20px;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Gift Button Style */
+  .gift-button {
+    padding: 15px 30px;
+    background-color: #ff1493;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 20, 147, 0.5);
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+  }
+
+  .gift-button:hover {
+    background-color: #e8007a;
+    transform: scale(1.05);
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 20, 147, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 20, 147, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 20, 147, 0); }
+  }
+
+  /* Modal/Popup Styles */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 1000;
+    align-items: center; /* PERFECTLY CENTERS CONTENT VERTICALLY */
+    justify-content: center; /* PERFECTLY CENTERS CONTENT HORIZONTALLY */
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+  }
+
+  .modal-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* **ENLARGED IMAGE STYLES - Adjusted to fill about half the page** */
+  .modal-image {
+    max-width: 60vw; /* Up to 60% of viewport width (approx. half page) */
+    max-height: 60vh; /* Up to 60% of viewport height (approx. half page) */
+    width: auto; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+  }
+
+  .gift-content {
+    max-width: 100%;
+    max-height: 100vh;
+  }
+
+  /* Close Button Style */
+  .close-btn {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ff1493;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s;
+    z-index: 1001;
+  }
+
+  .close-btn:hover {
+    transform: scale(1.1);
+  }
+
+  /* Rolling Animation on close (applied via JS class) */
+  .roll-out {
+    animation: rollOut 0.8s ease-in forwards;
+  }
+
+  @keyframes rollOut {
+    0% { opacity: 1; transform: scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: scale(0) rotate(720deg); }
+  }
+
+  /* Gift Modal Specific Styles */
+  #giftModal .gift-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: #ff1493;
+    font-size: 1.5rem;
+    position: relative;
+    transform: scale(0.5);
+    animation: giftOpen 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  }
+
+  #giftModal .close-btn {
+    top: 10px;
+    right: 10px;
+    color: white;
+    background: #ff1493;
+  }
+
+  @keyframes giftOpen {
+    to { transform: scale(1); }
+  }
+
+  /* Flower and Heart styles (Existing) */
+  .flowers {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    margin-top: 20px;
+    overflow: visible;
+  }
+
+  .petal {
+    position: absolute;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle at 30% 30%, #ff1744, #b71c1c);
+    border-radius: 50% 50% 50% 50%;
+    transform: scale(0);
+    animation: bloom 0.8s ease forwards;
+  }
+
+  @keyframes bloom {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    100% { transform: scale(1.3) rotate(360deg); opacity: 1; }
+  }
+
+  .heart {
+    position: absolute;
+    color: #ff5c8d;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: floatUp 5s ease-in infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 1; }
+    100% { transform: translateY(-600px); opacity: 0; }
+  }
+
+  @media (max-width: 800px) {
+    .photo-gallery img {
+      width: 150px;
+      height: 150px;
+    }
+    /* Adjust modal image size on smaller screens */
+    .modal-image {
+        max-width: 80vw;
+        max-height: 80vh;
+    }
+    #imageModal .close-btn {
+        top: -10px;
+        right: 10px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .photo-gallery img {
+      width: 120px;
+      height: 120px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<h1>🎉 Happy Birthday to My Dearest Sister 💖</h1>
+<p>You make every moment brighter and every heart warmer 🌸</p>
+
+<div class="photo-gallery" id="photoGallery">
+  <!-- 10 Placeholder Images (use your actual paths here) -->
+  <img src="1.jpg" alt="Sister Photo 1" data-original-index="0">
+  <img src="2.jpg" alt="Sister Photo 2" data-original-index="1">
+  <img src="3.jpg" alt="Sister Photo 3" data-original-index="2">
+  <img src="4.jpg" alt="Sister Photo 4" data-original-index="3">
+  <img src="5.jpg" alt="Sister Photo 5" data-original-index="4">
+  <img src="6.jpg" alt="Sister Photo 6" data-original-index="5">
+  <img src="7.jpg" alt="Sister Photo 7" data-original-index="6">
+  <img src="8.jpg" alt="Sister Photo 8" data-original-index="7">
+  <img src="9.jpg" alt="Sister Photo 9" data-original-index="8">
+  <img src="10.jpg" alt="Sister Photo 10" data-original-index="9">
+</div>
+
+<div class="wish">💐 Wishing you endless happiness, laughter, and love! 💖</div>
+
+<!-- Birthday Gift Button -->
+<button class="gift-button" id="openGiftButton">Click to open your birthday gift!</button>
+
+<div class="flowers" id="flowers"></div>
+
+
+<!-- Image Popup Modal -->
+<div id="imageModal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="close-btn" id="closeImageModal">&times;</span>
+    <!-- The clicked image will be loaded here -->
+    <img id="modalImage" class="modal-image" src="" alt="Zoomed Photo">
+  </div>
+</div>
+
+<!-- Birthday Gift Modal -->
+<div id="giftModal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-btn" id="closeGiftModal">&times;</span>
+        <div class="gift-content">
+            <img src="neckband.jpg" style="border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); width: 50%;" alt="Gift Picture">
+            <h2>The Real Gift: A neckband</h2>
+            <p>To my beautiful sister, this neckband is a little sparkle for your special day—just like you light up my life. Happy Birthday!.Enjoy your special day!</p>
+            <p style="margin-top: 15px;">With all my love,<br>Your Sibling ❤️</p>
+        </div>
+    </div>
+</div>
+
+<script>
+  // EXISTING CODE FOR FLOWERS AND HEARTS
+  const flowers = document.getElementById("flowers");
+
+  function createPetal(i) {
+    const petal = document.createElement("div");
+    petal.classList.add("petal");
+    petal.style.left = `${50 + (Math.random() - 0.5) * 40}%`;
+    petal.style.animationDelay = `${i * 0.1}s`;
+    flowers.appendChild(petal);
+    setTimeout(() => petal.remove(), 6000);
+  }
+
+  for (let i = 0; i < 20; i++) {
+    setTimeout(() => createPetal(i), i * 150);
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "%";
+    heart.style.fontSize = Math.random() * 20 + 10 + "px";
+    heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+
+  setInterval(createHeart, 500);
+
+  // NEW CODE FOR IMAGE POPUP AND GIFT BUTTON
+
+  const imageModal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+  const closeImageModal = document.getElementById('closeImageModal');
+  const galleryImages = document.querySelectorAll('.photo-gallery img');
+  
+  let originalImage = null;
+
+  // Function to open the Image Modal
+  galleryImages.forEach(img => {
+    img.addEventListener('click', function() {
+      // 1. Store the clicked image element
+      originalImage = this; 
+      
+      // 2. Set the modal image source
+      modalImage.src = this.src;
+      modalImage.alt = this.alt;
+
+      // 3. Remove the roll-out class if it exists (for a fresh open)
+      modalImage.classList.remove('roll-out');
+
+      // 4. Show the modal (CSS ensures it is centered and large)
+      imageModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent scrolling background
+    });
+  });
+
+  // Function to close the Image Modal with "rolling animation"
+  function closeImagePopup() {
+    if (!imageModal.style.display || imageModal.style.display === 'none') return;
+
+    // 1. Trigger the roll-out animation
+    modalImage.classList.add('roll-out');
+
+    // 2. Hide modal after animation completes (0.8s set in CSS)
+    modalImage.addEventListener('animationend', function handler() {
+      modalImage.classList.remove('roll-out');
+      imageModal.style.display = 'none';
+      document.body.style.overflow = ''; // Restore scrolling
+      modalImage.removeEventListener('animationend', handler);
+      originalImage = null; // Clear the reference
+    });
+  }
+
+  // Close image modal on button click
+  closeImageModal.addEventListener('click', closeImagePopup);
+
+  // Close image modal on overlay click
+  imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) {
+      closeImagePopup();
+    }
+  });
+
+
+  // GIFT MODAL LOGIC
+  const giftModal = document.getElementById('giftModal');
+  const openGiftButton = document.getElementById('openGiftButton');
+  const closeGiftModal = document.getElementById('closeGiftModal');
+
+  // Open Gift Modal
+  openGiftButton.addEventListener('click', () => {
+    giftModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+
+  // Close Gift Modal
+  function closeGiftPopup() {
+    giftModal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  closeGiftModal.addEventListener('click', closeGiftPopup);
+  
+  // Close gift modal on overlay click
+  giftModal.addEventListener('click', (e) => {
+    if (e.target === giftModal) {
+      closeGiftPopup();
+    }
+  });
+
+</script>
+
+</body>
+</html>
