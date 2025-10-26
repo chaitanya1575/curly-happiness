@@ -269,6 +269,11 @@
     20% { opacity: 1; }
     100% { transform: translateY(-600px); opacity: 0; }
   }
+    
+  /* --- NEW STYLE: Hide Audio Player Controls --- */
+  #bgsong {
+    display: none; 
+  }
 
   @media (max-width: 800px) {
     .photo-gallery img {
@@ -295,6 +300,15 @@
 </style>
 </head>
 <body>
+
+<!-- --- NEW CODE: Audio Element for Background Music --- -->
+<!-- NOTE: You must replace 'birthdaysong.mp3' with the actual path to your audio file. -->
+<audio id="bgsong" loop autoplay>
+  <source src="birthdaysong.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<!----------------------------------------------------------->
+
 
 <h1>🎉 Happy Birthday to My Dearest Sister 💖</h1>
 <p>You make every moment brighter and every heart warmer 🌸</p>
@@ -398,6 +412,13 @@
       // 4. Show the modal (CSS ensures it is centered and large)
       imageModal.style.display = 'flex';
       document.body.style.overflow = 'hidden'; // Prevent scrolling background
+      
+      // --- NEW CODE: Try to play music on interaction ---
+      const bgSong = document.getElementById('bgsong');
+      if (bgSong.paused) {
+        bgSong.play().catch(e => console.log('Autoplay blocked: ', e));
+      }
+      // -------------------------------------------------
     });
   });
 
@@ -433,9 +454,16 @@
   const giftModal = document.getElementById('giftModal');
   const openGiftButton = document.getElementById('openGiftButton');
   const closeGiftModal = document.getElementById('closeGiftModal');
+  const bgSong = document.getElementById('bgsong'); // Referenced again for clarity
 
   // Open Gift Modal
   openGiftButton.addEventListener('click', () => {
+    // --- NEW CODE: Try to play music on interaction (most likely to succeed here) ---
+    if (bgSong.paused) {
+      bgSong.play().catch(e => console.log('Autoplay blocked: ', e));
+    }
+    // ---------------------------------------------------------------------------------
+
     giftModal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
   });
@@ -454,6 +482,13 @@
       closeGiftPopup();
     }
   });
+  
+  // --- NEW CODE: Attempt to play music on page load (often blocked) ---
+  document.addEventListener('DOMContentLoaded', () => {
+      bgSong.volume = 0.5; // Set a reasonable volume
+      bgSong.play().catch(e => console.log('Initial Autoplay blocked: ', e));
+  });
+  // ---------------------------------------------------------------------
 
 </script>
 
